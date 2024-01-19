@@ -1,8 +1,12 @@
 package com.pp.shortvideo
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
+import android.view.View
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 import com.pp.shortvideo.databinding.ActivitySignupBinding
 
 class SignupActivity : AppCompatActivity() {
@@ -13,6 +17,17 @@ class SignupActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.submitBtn.setOnClickListener {
             signup()
+        }
+
+    }
+
+    fun setInProgress(inProgress : Boolean){
+        if(inProgress){
+            binding.progressBar.visibility = View.VISIBLE
+            binding.submitBtn.visibility = View.GONE
+        }else{
+            binding.progressBar.visibility = View.GONE
+            binding.submitBtn.visibility = View.VISIBLE
         }
     }
     fun signup() {
@@ -34,6 +49,24 @@ class SignupActivity : AppCompatActivity() {
         signupWithFirebase(email,password)
     }
     fun signupWithFirebase(email : String, password : String) {
+        setInProgress(true)
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(
+            email,password
+        ).addOnSuccessListener {
+//            it.user?.let {user->
+//                val userModel = UserModel( user.uid,email,email.substringBefore("@") )
+//                Firebase.firestore.collection("users")
+//                    .document(user.uid)
+//                    .set(userModel).addOnSuccessListener {
+//                        UiUtil.showToast(applicationContext,"Account created successfully")
+//                        setInProgress(false)
+//                        startActivity(Intent(this,MainActivity::class.java))
+//                        finish()
+//                    }
+//            }
+            Toast.makeText(applicationContext,"success",Toast.LENGTH_SHORT).show();
+
+        }
 
     }
 }
