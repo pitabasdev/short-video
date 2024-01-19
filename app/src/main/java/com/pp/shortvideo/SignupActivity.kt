@@ -7,7 +7,11 @@ import android.util.Patterns
 import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.pp.shortvideo.databinding.ActivitySignupBinding
+import com.pp.shortvideo.model.UserModel
+import com.pp.shortvideo.util.UiUtil
 
 class SignupActivity : AppCompatActivity() {
     lateinit var binding : ActivitySignupBinding
@@ -53,19 +57,22 @@ class SignupActivity : AppCompatActivity() {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(
             email,password
         ).addOnSuccessListener {
-//            it.user?.let {user->
-//                val userModel = UserModel( user.uid,email,email.substringBefore("@") )
-//                Firebase.firestore.collection("users")
-//                    .document(user.uid)
-//                    .set(userModel).addOnSuccessListener {
-//                        UiUtil.showToast(applicationContext,"Account created successfully")
-//                        setInProgress(false)
-//                        startActivity(Intent(this,MainActivity::class.java))
-//                        finish()
-//                    }
-//            }
-            Toast.makeText(applicationContext,"success",Toast.LENGTH_SHORT).show();
+            it.user?.let {user->
+                val userModel = UserModel( user.uid,email,email.substringBefore("@") )
+                Firebase.firestore.collection("users")
+                    .document(user.uid)
+                    .set(userModel).addOnSuccessListener {
+                        UiUtil.showToast(applicationContext,"Account created successfully")
+                        setInProgress(false)
+                        startActivity(Intent(this,MainActivity::class.java))
+                        finish()
+                    }
+            }
 
+
+        }.addOnFailureListener {
+            UiUtil.showToast(applicationContext,it.localizedMessage?: "Something went wrong")
+            setInProgress(false)
         }
 
     }
