@@ -10,16 +10,21 @@ import android.provider.MediaStore
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.text.selection.Direction
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.pp.shortvideo.adapter.ProfileVideoAdapter
 import com.pp.shortvideo.databinding.ActivityProfileBinding
 import com.pp.shortvideo.model.UserModel
+import com.pp.shortvideo.model.VideoModel
+import java.util.Queue
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -29,7 +34,7 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var currentUserId : String
     lateinit var photoLauncher: ActivityResultLauncher<Intent>
 
-
+     lateinit var adapter:ProfileVideoAdapter
     lateinit var profileUserModel : UserModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +65,7 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
         getProfileDataFromFirebase()
+        setupRecyclerView()
     }
 
     fun followUnfollowUser(){
@@ -184,6 +190,15 @@ class ProfileActivity : AppCompatActivity() {
                     binding.postCount.text  = it.size().toString()
                 }
         }
+    }
+
+    fun setupRecyclerView(){
+        val options=FirestoreRecyclerOptions.Builder<VideoModel>()
+            .setQuery(
+                Firebase.firestore.collection("videos")
+                    .whereEqualTo("uploaderId",profileUserId)
+                    .orderBy("createdTime",Queue.Direction.DESCENDING)
+            )
     }
 
 }
