@@ -17,7 +17,9 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.pp.shortvideo.databinding.ActivityVideoUploadBinding
+import com.pp.shortvideo.model.VideoModel
 import com.pp.shortvideo.util.UiUtil
 
 
@@ -57,9 +59,9 @@ class VideoUploadActivity : AppCompatActivity() {
             binding.postCaptionInput.setError("Write something")
             return;
         }
-//        setInProgress(true);
+        setInProgress(true);
         selectedVideoUri?.apply {
-            //store in firebase cloud storage
+
 
             val videoRef =  FirebaseStorage.getInstance()
                 .reference
@@ -68,7 +70,7 @@ class VideoUploadActivity : AppCompatActivity() {
                 .addOnSuccessListener {
                     videoRef.downloadUrl.addOnSuccessListener {downloadUrl->
 
-//                        postToFirestore(downloadUrl.toString())
+                        postToFirestore(downloadUrl.toString())
                     }
                 }
 
@@ -78,36 +80,36 @@ class VideoUploadActivity : AppCompatActivity() {
 
     }
 
-//    private fun postToFirestore(url : String){
-//        val videoModel = VideoModel(
-//            FirebaseAuth.getInstance().currentUser?.uid!! + "_"+Timestamp.now().toString(),
-//            binding.postCaptionInput.text.toString(),
-//            url,
-//            FirebaseAuth.getInstance().currentUser?.uid!!,
-//            Timestamp.now(),
-//        )
-//        Firebase.firestore.collection("videos")
-//            .document(videoModel.videoId)
-//            .set(videoModel)
-//            .addOnSuccessListener {
-//                setInProgress(false);
-//                UiUtil.showToast(applicationContext,"Video uploaded")
-//                finish()
-//            }.addOnFailureListener {
-//                setInProgress(false)
-//                UiUtil.showToast(applicationContext,"Video failed to upload")
-//            }
-//    }
+    private fun postToFirestore(url : String){
+        val videoModel = VideoModel(
+            FirebaseAuth.getInstance().currentUser?.uid!! + "_"+Timestamp.now().toString(),
+            binding.postCaptionInput.text.toString(),
+            url,
+            FirebaseAuth.getInstance().currentUser?.uid!!,
+            Timestamp.now(),
+        )
+        Firebase.firestore.collection("videos")
+            .document(videoModel.videoId)
+            .set(videoModel)
+            .addOnSuccessListener {
+                setInProgress(false);
+                UiUtil.showToast(applicationContext,"Video uploaded")
+                finish()
+            }.addOnFailureListener {
+                setInProgress(false)
+                UiUtil.showToast(applicationContext,"Video failed to upload")
+            }
+    }
 
-//    private  fun setInProgress(inProgress : Boolean){
-//        if(inProgress){
-//            binding.progressBar.visibility = View.VISIBLE
-//            binding.submitPostBtn.visibility = View.GONE
-//        }else{
-//            binding.progressBar.visibility = View.GONE
-//            binding.submitPostBtn.visibility = View.VISIBLE
-//        }
-//    }
+    private  fun setInProgress(inProgress : Boolean){
+        if(inProgress){
+            binding.progressBar.visibility = View.VISIBLE
+            binding.submitPostBtn.visibility = View.GONE
+        }else{
+            binding.progressBar.visibility = View.GONE
+            binding.submitPostBtn.visibility = View.VISIBLE
+        }
+    }
 
     private fun showPostView(){
         selectedVideoUri?.let {
