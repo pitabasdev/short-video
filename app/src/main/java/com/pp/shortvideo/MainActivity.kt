@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.pp.shortvideo.databinding.ActivityMainBinding
+import com.pp.shortvideo.model.VideoModel
 import com.pp.shortvideo.util.UiUtil
 
 
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             }
             false
         }
-//        setupViewPager()
+        setupViewPager()
 
     }
 
@@ -52,10 +53,10 @@ class MainActivity : AppCompatActivity() {
 //        binding.viewPager.adapter = adapter
 //    }
 
-//    override fun onStart() {
-//        super.onStart()
+    override fun onStart() {
+        super.onStart()
 //        adapter.startListening()
-//    }
+    }
 
     override fun onStop() {
         super.onStop()
