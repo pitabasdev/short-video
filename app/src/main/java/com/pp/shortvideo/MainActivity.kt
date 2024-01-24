@@ -3,10 +3,12 @@ package com.pp.shortvideo
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.pp.shortvideo.adapter.VideoListAdapter
 import com.pp.shortvideo.databinding.ActivityMainBinding
 import com.pp.shortvideo.model.VideoModel
 import com.pp.shortvideo.util.UiUtil
@@ -15,7 +17,7 @@ import com.pp.shortvideo.util.UiUtil
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
-//    lateinit var adapter : VideoListAdapter
+    lateinit var adapter : VideoListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,24 +45,24 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-//    private fun setupViewPager(){
-//        val options = FirestoreRecyclerOptions.Builder<VideoModel>()
-//            .setQuery(
-//                Firebase.firestore.collection("videos"),
-//                VideoModel::class.java
-//            ).build()
-//        adapter = VideoListAdapter(options)
-//        binding.viewPager.adapter = adapter
-//    }
+    private fun setupViewPager(){
+        val options = FirestoreRecyclerOptions.Builder<VideoModel>()
+            .setQuery(
+                Firebase.firestore.collection("videos"),
+                VideoModel::class.java
+            ).build()
+        adapter = VideoListAdapter(options)
+        binding.viewPager.adapter = adapter
+    }
 
     override fun onStart() {
         super.onStart()
-//        adapter.startListening()
+        adapter.startListening()
     }
 
     override fun onStop() {
         super.onStop()
-//        adapter.startListening()
+        adapter.startListening()
     }
 
 
