@@ -22,7 +22,6 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         FirebaseAuth.getInstance().currentUser?.let {
-            //user is there logged in
             startActivity(Intent(this,MainActivity::class.java))
             finish()
         }
