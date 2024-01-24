@@ -21,23 +21,23 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        binding.bottomNavBar.setOnItemSelectedListener {menuItem->
-//            when(menuItem.itemId){
-//                R.id.bottom_menu_home->{
-//                    UiUtil.showToast(this,"Home")
-//                }
-//                R.id.bottom_menu_add_video->{
-//                    startActivity(Intent(this,VideoUploadActivity::class.java))
-//                }
-//                R.id.bottom_menu_profile->{
-//                    //Goto ProfileActivity
-//                    val intent = Intent(this,ProfileActivity::class.java)
-//                    intent.putExtra("profile_user_id", FirebaseAuth.getInstance().currentUser?.uid )
-//                    startActivity(intent)
-//                }
-//            }
-//            false
-//        }
+        binding.bottomNavBar.setOnItemSelectedListener {menuItem->
+            when(menuItem.itemId){
+                R.id.bottom_menu_home->{
+                    UiUtil.showToast(this,"Home")
+                }
+                R.id.bottom_menu_add_video->{
+                    startActivity(Intent(this,VideoUploadActivity::class.java))
+                }
+                R.id.bottom_menu_profile->{
+                    //Goto ProfileActivity
+                    val intent = Intent(this,ProfileActivity::class.java)
+                    intent.putExtra("profile_user_id", FirebaseAuth.getInstance().currentUser?.uid )
+                    startActivity(intent)
+                }
+            }
+            false
+        }
 //        setupViewPager()
 
     }
