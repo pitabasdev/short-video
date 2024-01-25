@@ -1,11 +1,13 @@
 package com.pp.shortvideo.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.pp.shortvideo.SingleVideoPlayerActivity
 import com.pp.shortvideo.databinding.ProfileVideoItemVideoBinding
 import com.pp.shortvideo.model.VideoModel
 
@@ -17,6 +19,11 @@ class ProfileVideoAdapter(options: FirestoreRecyclerOptions<VideoModel>)
             Glide.with(binding.thumbnailImageView)
                 .load(video.url)
                 .into(binding.thumbnailImageView)
+            binding.thumbnailImageView.setOnClickListener{
+                val intent=Intent(binding.thumbnailImageView.context,SingleVideoPlayerActivity::class.java)
+                intent.putExtra("videoId",video.videoId)
+                binding.thumbnailImageView.context.startActivity(intent)
+            }
 
         }
     }
