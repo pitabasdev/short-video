@@ -10,9 +10,9 @@ import android.provider.MediaStore
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -193,13 +193,28 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     fun setupRecyclerView(){
-//        val options=FirestoreRecyclerOptions.Builder<VideoModel>()
-//            .setQuery(
-//                Firebase.firestore.collection("videos")
-//                    .whereEqualTo("uploaderId",profileUserId)
-////                    .orderBy("createdTime",Queue.Direction.)
-//
-//            )
+        val options= FirestoreRecyclerOptions.Builder<VideoModel>()
+            .setQuery(
+                Firebase.firestore.collection("videos")
+                    .whereEqualTo("uploaderId",profileUserId),
+                VideoModel::class.java
+
+
+
+            ).build()
+        adapter= ProfileVideoAdapter(options)
+        binding.recyclerView.layoutManager=GridLayoutManager(this,3)
+        binding.recyclerView.adapter=adapter
+    }
+
+    override fun onStart() {
+        super.onStart()
+        adapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        adapter.startListening()
     }
 
 }
