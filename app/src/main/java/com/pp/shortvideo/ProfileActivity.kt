@@ -212,9 +212,9 @@ class ProfileActivity : AppCompatActivity() {
         adapter.startListening()
     }
 
-    override fun onStop() {
-        super.onStop()
-        adapter.startListening()
+    override fun onDestroy() {
+        super.onDestroy()
+        adapter.stopListening()
     }
 
 }
